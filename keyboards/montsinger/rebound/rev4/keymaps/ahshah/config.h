@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #define TAPPING_TERM 250
 
@@ -9,5 +9,6 @@
 
 // Experimental
 //#define IGNORE_MOD_TAP_INTERRUPT // fixes amaOn problem
-#define IGNORE_MOD_TAP_INTERRUPT_PER_KEY
+//#define IGNORE_MOD_TAP_INTERRUPT_PER_KEY // fixed amaOn problem, but now been renamed it seems
+#define HOLD_ON_OTHER_KEY_PRESS
 
