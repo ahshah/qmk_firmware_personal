@@ -72,6 +72,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef OLED_ENABLE
 #    include "oled_driver.h"
 #endif
+#ifdef I2C_USERSPACE_ENABLE
+#    include "i2c_userspace.h"
+#endif
 #ifdef ST7565_ENABLE
 #    include "st7565.h"
 #endif
@@ -394,6 +397,9 @@ void keyboard_init(void) {
 #ifdef OLED_ENABLE
     oled_init(OLED_ROTATION_0);
 #endif
+#ifdef I2C_USERSPACE_ENABLE
+    i2c_userspace_init();
+#endif
 #ifdef ST7565_ENABLE
     st7565_init(DISPLAY_ROTATION_0);
 #endif
@@ -659,6 +665,10 @@ void keyboard_task(void) {
     // Wake up oled if user is using those fabulous keys or spinning those encoders!
     if (activity_has_occurred) oled_on();
 #    endif
+#endif
+
+#ifdef I2C_USERSPACE_ENABLE
+    i2c_userspace_kb_task_loop();
 #endif
 
 #ifdef ST7565_ENABLE

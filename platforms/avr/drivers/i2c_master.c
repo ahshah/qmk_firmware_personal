@@ -161,7 +161,6 @@ i2c_status_t i2c_transmit(uint8_t address, const uint8_t* data, uint16_t length,
     for (uint16_t i = 0; i < length && status >= 0; i++) {
         status = i2c_write(data[i], timeout);
     }
-
     i2c_stop();
 
     return status;

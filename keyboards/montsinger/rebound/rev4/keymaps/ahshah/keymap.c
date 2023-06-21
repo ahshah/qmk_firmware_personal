@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "i2c_userspace.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         [0] = LAYOUT_all(
@@ -65,3 +66,36 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
             return true;
     }
 }
+
+bool transmit = false;
+bool i2c_userspace_task_user(void) {
+    if (transmit) {
+        uint8_t byte = 0x1;
+        i2c_userspace_write(&byte, 1);
+        transmit = false;
+    }
+    return true;
+}
+
+#define COMM_COPY LT(0, KC_COMM)
+static bool process_tap_or_long_press_key(keyrecord_t* record, uint16_t long_press_keycode) {
+    if (record->tap.count == 0) {  // Key is being held.
+        if (record->event.pressed) {
+            transmit = true;
+        }
+        return false;  // Skip default handling.
+    }
+    return true;  // Continue default handling.
+}
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_COMM:  // Comma on tap, Ctrl+C on long press.
+            return process_tap_or_long_press_key(record, C(KC_C));
+        default:
+            break;
+    }
+    return true;
+}
+
+
+

@@ -770,6 +770,13 @@ ifeq ($(strip $(OLED_ENABLE)), yes)
     endif
 endif
 
+ifeq ($(strip $(I2C_USERSPACE_ENABLE)), yes)
+OPT_DEFS += -DI2C_USERSPACE_ENABLE
+COMMON_VPATH += $(DRIVER_PATH)/i2c_userspace
+SRC += i2c_userspace.c
+QUANTUM_LIB_SRC += i2c_master.c
+endif
+
 ifeq ($(strip $(ST7565_ENABLE)), yes)
     OPT_DEFS += -DST7565_ENABLE
     COMMON_VPATH += $(DRIVER_PATH)/oled # For glcdfont.h
